@@ -157,12 +157,6 @@ func (m Model) View() string {
 	s.WriteString(m.renderPills())
 	s.WriteString("\n\n")
 
-	labels := m.renderLabels()
-	if labels != "" {
-		s.WriteString(labels)
-		s.WriteString("\n\n")
-	}
-
 	s.WriteString(m.renderDescription())
 	s.WriteString("\n\n")
 	s.WriteString(m.renderChecks())
@@ -257,14 +251,6 @@ func (m *Model) renderPills() string {
 	mergeablePill := m.renderMergeablePill()
 	checksPill := m.renderChecksPill()
 	return lipgloss.JoinHorizontal(lipgloss.Top, statusPill, " ", mergeablePill, " ", checksPill)
-}
-
-func (m *Model) renderLabels() string {
-	width := m.getIndentedContentWidth()
-	labels := m.pr.Data.Labels.Nodes
-	style := m.ctx.Styles.PrSidebar.PillStyle
-
-	return common.RenderLabels(width, labels, style)
 }
 
 func (m *Model) renderDescription() string {

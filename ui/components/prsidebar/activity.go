@@ -26,20 +26,6 @@ func (m *Model) renderActivity() string {
 	var activities []RenderedActivity
 	var comments []comment
 
-	for _, review := range m.pr.Data.ReviewThreads.Nodes {
-		path := review.Path
-		line := review.Line
-		for _, c := range review.Comments.Nodes {
-			comments = append(comments, comment{
-				Author:    c.Author.Login,
-				Body:      c.Body,
-				UpdatedAt: c.UpdatedAt,
-				Path:      &path,
-				Line:      &line,
-			})
-		}
-	}
-
 	for _, c := range m.pr.Data.Comments.Nodes {
 		comments = append(comments, comment{
 			Author:    c.Author.Login,
