@@ -195,6 +195,7 @@ type Config struct {
 	Theme          *ThemeConfig          `yaml:"theme,omitempty" validate:"omitempty"`
 	Pager          Pager                 `yaml:"pager"`
 	ConfirmQuit    bool                  `yaml:"confirmQuit"`
+	OscClipboard   bool                  `yaml:"oscClipboard"`
 }
 
 type configError struct {
@@ -304,6 +305,7 @@ func (parser ConfigParser) getDefaultConfig() Config {
 			},
 		},
 		ConfirmQuit: false,
+		OscClipboard: false,
 	}
 }
 

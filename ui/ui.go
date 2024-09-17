@@ -258,7 +258,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, cmd
 			}
 			number := fmt.Sprint(row.GetNumber())
-			err := clipboard.WriteAll(number)
+			var err error
+			if m.ctx.Config.OscClipboard {
+				err = oscCopy(number)
+			} else {
+				err = clipboard.WriteAll(number)
+			}
 			if err != nil {
 				cmd = m.notifyErr(fmt.Sprintf("Failed copying to clipboard %v", err))
 			} else {
@@ -274,7 +279,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				return m, cmd
 			}
 			url := row.GetUrl()
-			err := clipboard.WriteAll(url)
+			var err error
+			if m.ctx.Config.OscClipboard {
+				err = oscCopy(url)
+			} else {
+				err = clipboard.WriteAll(url)
+			}
 			if err != nil {
 				cmd = m.notifyErr(fmt.Sprintf("Failed copying to clipboard %v", err))
 			} else {
@@ -912,23 +922,6 @@ func (m *Model) renderRunningTask() string {
 		MaxHeight(1).
 		Background(m.ctx.Theme.SelectedBackground).
 		Render(strings.TrimSpace(lipgloss.JoinHorizontal(lipgloss.Top, stats, currTaskStatus)))
-}
-
-type userFetchedMsg struct {
-	user string
-}
-
-func fetchUser() tea.Msg {
-	user, err := data.CurrentLoginName()
-	if err != nil {
-		return constants.ErrMsg{
-			Err: err,
-		}
-	}
-
-	return userFetchedMsg{
-		user: user,
-	}
 }
 
 type intervalRefresh time.Time
